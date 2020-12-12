@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import { useAuth } from "../context/auth";
 
 function Admin(props) {
+  let history = useHistory();
   const [users, setUsers]= useState([])
   const { authTokens, setAuthTokens } = useAuth();
 
@@ -26,12 +28,13 @@ function Admin(props) {
       }
     })
     .catch((e) => {
-      toast.error("Houve uma falha na obtenção de usuários!");
+      toast.error("Você ainda é um jovem sem privilégios, nada pra você!");
     });
   }, [authTokens])
 
   function logOut() {
     setAuthTokens();
+    history.push("/");
   }
 
   return (

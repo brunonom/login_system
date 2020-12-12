@@ -12,7 +12,7 @@ function EditUser() {
   const onSubmit = data => {
     setLoading(true)
     axios({
-      method: 'post',
+      method: 'put',
       url: `http://127.0.0.1:5000/api/users/${authTokens().id}`,
       responseType: 'text',
       data: data,
@@ -24,7 +24,7 @@ function EditUser() {
     })
     .then((result) => {
       if (result.status === 200) {
-        toast.error("Certinho. Tá atualizado!");
+        toast.success("Certinho. Tá atualizado!");
         setLoading();
       } else {
         toast.error("ixe, não vai dar não!");
