@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,15 +11,16 @@ import Login from "./pages/Login";
 import Signup from './pages/Signup';
 
 function App(props) {
-  const [authTokens, setAuthTokens] = useState();
-  
   const setTokens = (data) => {
-    localStorage.setItem("tokens", JSON.stringify(data));
-    setAuthTokens(data);
+    data ? localStorage.setItem("tokens", JSON.stringify(data)) : localStorage.removeItem("tokens")
+  }
+
+  const getTokens = () => {
+    return JSON.parse(localStorage.getItem("tokens"));
   }
 
   return (
-    <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+    <AuthContext.Provider value={{ authTokens: getTokens , setAuthTokens: setTokens }}>
       <Router>
         <div>
           <ToastContainer position="top-right" autoClose={5000} pauseOnHover />

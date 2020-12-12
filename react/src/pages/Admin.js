@@ -7,15 +7,12 @@ function Admin(props) {
   const [users, setUsers]= useState([])
   const { authTokens, setAuthTokens } = useAuth();
 
-  console.log(authTokens)
-
   useEffect(() => {
-    console.log(authTokens)
     axios({
       method: 'get',
       url: "http://127.0.0.1:5000/api/users",
       auth: {
-        username: authTokens,
+        username: authTokens().token,
         password: 'no-needed',
       },
       responseType: 'text',

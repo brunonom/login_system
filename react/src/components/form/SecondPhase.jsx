@@ -26,7 +26,7 @@ function SecondPhase({ setLoggedIn, firstPhaseToken }) {
     })
       .then((result) => {
         if (result.status === 200) {
-          setAuthTokens(result.data.token);
+          setAuthTokens(result.data);
           setLoggedIn(true);
         } else {
           setIsError(true);
