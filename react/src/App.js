@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoute from './PrivateRoute';
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
+import EditUser from "./pages/EditUser";
 import { AuthContext } from "./context/auth";
 import Login from "./pages/Login";
 import Signup from './pages/Signup';
@@ -28,7 +29,10 @@ function App(props) {
                 <Link to="/" className="pure-menu-link">Página Inicial</Link>
               </li>
               <li className="pure-menu-item">
-                <Link to="/admin" className="pure-menu-link">Página Administrativa</Link>
+                <Link to="/admin" className="pure-menu-link">Gerenciar usuários</Link>
+              </li>
+              <li className="pure-menu-item">
+                <Link to="/edit" className="pure-menu-link">Editar perfil</Link>
               </li>
             </ul>
           </div>
@@ -36,6 +40,8 @@ function App(props) {
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           <PrivateRoute path="/admin" component={Admin} />
+          <PrivateRoute path="/edit" component={EditUser} />
+          <PrivateRoute path="/edit/:id" component={EditUser} />
         </div>
       </Router>
     </AuthContext.Provider>

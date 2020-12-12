@@ -1,8 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { toast } from 'react-toastify';
 import { useAuth } from "../context/auth";
 
 function Admin(props) {
-  const { setAuthTokens } = useAuth();
+  const [users, setUsers]= useState([])
+  const { authTokens, setAuthTokens } = useAuth();
+
+  console.log(authTokens)
+
+  useEffect(() => {
+    console.log(authTokens)
+    axios({
+      method: 'get',
+      url: "http://127.0.0.1:5000/api/users",
+      auth: {
+        username: authTokens,
+        password: 'no-needed',
+      },
+      responseType: 'text',
+      headers: { "Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json; charset=utf-8' }
+    })
+    .then((result) => {
+      if (result.status === 200) {
+        setUsers(result.data)
+      } else if (result.status === 401) {
+        toast.error("Você ainda é um jovem sem privilégios, nada pra você!");
+      }
+    })
+    .catch((e) => {
+      toast.error("Houve uma falha na obtenção de usuários!");
+    });
+  }, [authTokens])
 
   function logOut() {
     setAuthTokens();
@@ -10,8 +39,29 @@ function Admin(props) {
 
   return (
     <main>
-      <div>Página Administrativa: este conteúdo é protegido</div>
-      <button className="pure-button" onClick={logOut}>Sair</button>
+      <div>Este conteúdo é protegido por nível de acesso</div>
+      <table class="pure-table">
+        <thead>
+            <tr>
+              <th>Editar</th>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.location}>
+              <td>{user.location}</td>
+              <td>{user.username}</td>
+              <td>{user.email}</td>
+              <td>{user.role}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <button className="pure-button logout-btn" onClick={logOut}>Sair</button>
     </main>
   );
 }
